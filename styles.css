@@ -1,0 +1,111 @@
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+    font-family: "VT323";
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.calculator {
+    border-radius: 10px;
+    width: 350px;
+    max-width: 350px;
+    width: 100%;
+    position: relative;
+    background-color: black;
+    padding: 1.5em 2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 1.5em 2em;
+}
+
+
+.result {
+    padding: .25em .5em;
+    margin: .25em 1em;
+    width: 85%;
+    height: 65px;
+    font-family: "VT323";
+    border: none;
+    outline: none;
+    font-size: 60px;
+    color: #000;
+    text-align: right;
+    background-color: rgba(137, 137, 137, 1);
+    overflow-x: visible;
+}
+
+.separator {
+    position: absolute;
+    display: flex;
+    margin-top: -315px;
+    width: 100%;
+    height: 3px;
+    background-color: rgba(137, 137, 137, 1);
+    /* Example background color for the full-width div */
+    color: white;
+    /* Example text color */
+}
+
+/* calculator keys */
+
+.keys {
+    display: grid;
+    margin-top: 2em;
+    gap: 1.3em;
+    width: 100%;
+    grid-template-columns: repeat(4, auto);
+}
+
+.button {
+    width: 70px;
+    height: 70px;
+    border-radius: 10px;
+    background-color: rgb(84, 84, 84, 1);
+    border-top: rgba(131, 131, 131, 1) 3px solid;
+    border-right: rgba(41, 41, 41, 1) 3px solid;
+    border-bottom: rgba(41, 41, 41, 1) 3px solid;
+    ;
+    border-left: rgba(131, 131, 131, 1) 3px solid;
+    color: white;
+    font-size: 1.8rem;
+}
+
+/* Colored keys */
+
+.button.red {
+    background-color: rgba(180, 32, 32, 1);
+    border-top: rgba(255, 85, 85, 1) 3px solid;
+    border-left: rgba(255, 85, 85, 1) 3px solid;
+    border-bottom: rgba(41, 41, 41, 1) 3px solid;
+    ;
+    border-right: rgba(41, 41, 41, 1) 3px solid;
+}
+
+.button:hover {
+    background-color: rgb(111, 111, 111);
+}
+
+.button.red:hover {
+    background-color: rgb(249, 45, 45);
+}
+
+.button.green {
+    background-color: rgba(68, 214, 190, 0.733);
+    border-top: rgba(119, 203, 178) 3px solid;
+    border-right: rgba(41, 41, 41) 3px solid;
+    border-bottom: rgba(41, 41, 41) 3px solid;
+    ;
+    border-left: rgba(95, 208, 132, 0.733) 3px solid;
+}
+
+.button.green:hover {
+    background-color: rgb(125, 180, 152);
+}
