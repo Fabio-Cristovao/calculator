@@ -16,24 +16,22 @@ let display = document.querySelector(".result");
 equalsKey = document.querySelector('.total');
 let acKey = document.querySelector(".reset");
 
-console.log("teste");
-
 keys.forEach(key => key.addEventListener("click", getCalculateArgs, false));
 equalsKey.addEventListener("click", calculate, false)
 acKey.addEventListener("click", reset, false)
-
-total = 0;
+total = "";
 
 function getCalculateArgs(e) {
 
     // get the number arguments
 
-    if (e.target.classList.contains("num") || (e.target.classList.contains("dot"))) {
+    if (e.target.classList.contains("num") || (e.target.classList.contains("dot"))) { 
 
         if (calculateArgs.length === 0) {
 
             total += e.target.innerHTML;
             display.innerHTML = total;
+
         } else {
 
             display.innerHTML = "";
@@ -41,6 +39,7 @@ function getCalculateArgs(e) {
             display.innerHTML = secondNum;
         }
     }
+
     // get the operator
 
     else if (e.target.classList.contains("operator")) {
@@ -121,7 +120,8 @@ function getCalculateArgs(e) {
 function reset() {
     calculateArgs = [];
     total = 0;
-    display.innerHTML = total;
+    display.innerHTML = 0;
+    total = "";
 }
 
 function calculate(total, operator, b) {
