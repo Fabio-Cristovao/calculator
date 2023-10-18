@@ -66,10 +66,8 @@ function getCalculateArgs(e) {
         } else {
 
             numberOfDecimalNumbers = countDecimalPlaces(total);
-            console.log(numberOfDecimalNumbers);
 
             formattedTotal = parseFloat(total).toFixed(6);
-            console.log(formattedTotal);
 
             numberOfDecimalNumbers < 6 ? calculateArgs.push(parseFloat(total), operator) : calculateArgs.push(parseFloat(formattedTotal), operator);
 
@@ -84,22 +82,27 @@ function getCalculateArgs(e) {
         let dotCount = (display.innerHTML.match(/\./g) || []).length;
 
         if (dotCount > 1 || display.innerHTML === "Invalid!" || total === undefined) {
+
             reset();
             display.innerHTML = "Invalid!";
         } else {
-            calculateArgs.push(parseFloat(total), operator);
-            console.log(calculateArgs);
+
+            console.log("here");
+
             countDecimalPlaces(e.target.innerHTML);
 
-            display.innerHTML = `${total}${e.target.innerHTML}`;
+            
 
             let parsedTotal = parseFloat(total);
             let parsedSecondNum = parseFloat(secondNum);
 
+            console.log(total, operator, secondNum);
+
             total = calculate(parsedTotal, operator, parsedSecondNum);
 
+            console.log(total);
+
             numberOfDecimalNumbers = countDecimalPlaces(total);
-            console.log(numberOfDecimalNumbers);
 
             numberOfDecimalNumbers < 6 ? display.innerHTML = total : display.innerHTML = parseFloat(total).toFixed(6);
 
@@ -108,10 +111,6 @@ function getCalculateArgs(e) {
 
     } else if (e.target.classList.contains("reset")) {
         reset();
-    }
-
-    else if (e.target.classList.contains("percentage")) {
-        console.log("percentage clicked!")
     }
 
     else {
@@ -130,8 +129,6 @@ function reset() {
 
 function calculate(total, operator, b) {
 
-    console.log(total, operator, b);
-
     let result;
 
     switch (operator) {
@@ -148,20 +145,21 @@ function calculate(total, operator, b) {
         default: "Invalid operation!"
     }
 
-    operator = "";
+    let parsedResult = parseFloat(result);
 
-    if (typeof result !== 'number') {
+    if (typeof parsedResult !== 'number') {
 
-        console.log("NaN here")
+        console.log("here");
        
         reset();
         display.innerHTML = "Invalid!"; 
-        console.log(display.innerHTML);
+
     } else {
 
-        return result;
-    }
+        operator = "";
 
+        return parsedResult;
+    }
 }
 
 // auxiliary functions
