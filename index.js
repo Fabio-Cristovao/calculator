@@ -25,8 +25,15 @@ function getCalculateArgs(e) {
 
     // get the number arguments
 
-    if (e.target.classList.contains("num") || (e.target.classList.contains("dot")) || display.innerHTML === "Invalid!") {
+    if (e.target.classList.contains("num") || (e.target.classList.contains("dot"))) {
 
+        let dotNumber = countDots();
+
+        console.log(dotNumber);
+
+        if (dotNumber > 1) {
+            document.querySelector(".dot").style.pointerEvents = "none";
+        } else {
             if (calculateArgs.length === 0) {
 
                 total += e.target.innerHTML;
@@ -37,84 +44,86 @@ function getCalculateArgs(e) {
                 display.innerHTML = "";
                 secondNum += e.target.innerHTML;
                 display.innerHTML = secondNum;
+
             }
         }
 
 
-    // get the operator
 
-    else if (e.target.classList.contains("operator")) {
 
-        switch (e.target.innerHTML) {
-            case "+": operator = "add";
-                break;
-            case '-': operator = "subtract";
-                break;
-            case '/': operator = "divide";
-                break;
-            case 'x': operator = "multiply";
-                break;
+        // get the operator
 
-            default: "Invalid operation!"
+        if (e.target.classList.contains("operator")) {
+
+            switch (e.target.innerHTML) {
+                case "+": operator = "add";
+                    break;
+                case '-': operator = "subtract";
+                    break;
+                case '/': operator = "divide";
+                    break;
+                case 'x': operator = "multiply";
+                    break;
+
+                default: "Invalid operation!"
+            }
+
+            let dotCount = (display.innerHTML.match(/\./g) || []).length;
+
+            if (dotCount > 1) {
+                reset();
+                display.innerHTML = "Invalid!";
+            } else {
+
+                numberOfDecimalNumbers = countDecimalPlaces(total);
+
+                formattedTotal = parseFloat(total).toFixed(6);
+
+                numberOfDecimalNumbers < 6 ? calculateArgs.push(parseFloat(total), operator) : calculateArgs.push(parseFloat(formattedTotal), operator);
+
+                numberOfDecimalNumbers < 6 ? display.innerHTML = `${total}${e.target.innerHTML}` : display.innerHTML = `${formattedTotal}${e.target.innerHTML}`;
+            }
         }
 
-        let dotCount = (display.innerHTML.match(/\./g) || []).length;
+        // get the total
 
-        if (dotCount > 1) {
-            reset();
-            display.innerHTML = "Invalid!";
-        } else {
+        else if (e.target.classList.contains("total")) {
 
-            numberOfDecimalNumbers = countDecimalPlaces(total);
+            let dotCount = (display.innerHTML.match(/\./g) || []).length;
 
-            formattedTotal = parseFloat(total).toFixed(6);
+            if (dotCount > 1 || display.innerHTML === "Invalid!" || total === undefined) {
 
-            numberOfDecimalNumbers < 6 ? calculateArgs.push(parseFloat(total), operator) : calculateArgs.push(parseFloat(formattedTotal), operator);
+                reset();
+                display.innerHTML = "Invalid!";
+            } else {
 
-            numberOfDecimalNumbers < 6 ? display.innerHTML = `${total}${e.target.innerHTML}` : display.innerHTML = `${formattedTotal}${e.target.innerHTML}`;
-        }
-    }
+                console.log("here");
 
-    // get the total
+                countDecimalPlaces(e.target.innerHTML);
 
-    else if (e.target.classList.contains("total")) {
+                let parsedTotal = parseFloat(total);
+                let parsedSecondNum = parseFloat(secondNum);
 
-        let dotCount = (display.innerHTML.match(/\./g) || []).length;
+                console.log(total, operator, secondNum);
 
-        if (dotCount > 1 || display.innerHTML === "Invalid!" || total === undefined) {
+                total = calculate(parsedTotal, operator, parsedSecondNum);
 
-            reset();
-            display.innerHTML = "Invalid!";
-        } else {
+                console.log(parsedTotal);
 
-            console.log("here");
+                numberOfDecimalNumbers = countDecimalPlaces(total);
 
-            countDecimalPlaces(e.target.innerHTML);
-
-            
-
-            let parsedTotal = parseFloat(total);
-            let parsedSecondNum = parseFloat(secondNum);
-
-            console.log(total, operator, secondNum);
-
-            total = calculate(parsedTotal, operator, parsedSecondNum);
-
-            console.log(total);
-
-            numberOfDecimalNumbers = countDecimalPlaces(total);
-
-            numberOfDecimalNumbers < 6 ? display.innerHTML = total : display.innerHTML = parseFloat(total).toFixed(6);
+                numberOfDecimalNumbers < 6 ? display.innerHTML = parseFloat(total) : display.innerHTML = parseFloat(total).toFixed(6);
+            }
 
             secondNum = "";
+
+        } else if (e.target.classList.contains("reset")) {
+            reset();
         }
 
-    } else if (e.target.classList.contains("reset")) {
-        reset();
-    }
-
-    else {
-        console.log("error!");
+        else {
+            console.log("error!");
+        }
     }
 }
 
@@ -130,6 +139,10 @@ function reset() {
 function calculate(total, operator, b) {
 
     let result;
+
+    if (b === "") {
+        console.log("here");
+    }
 
     switch (operator) {
 
@@ -150,13 +163,14 @@ function calculate(total, operator, b) {
     if (typeof parsedResult !== 'number') {
 
         console.log("here");
-       
+
         reset();
-        display.innerHTML = "Invalid!"; 
+        display.innerHTML = "Invalid!";
 
     } else {
 
         operator = "";
+        b = "";
 
         return parsedResult;
     }
@@ -185,6 +199,18 @@ function countDecimalPlaces(number) {
 
     return Math.max(0, decimalPart.length - exponent);
 }
+
+function countDots() {
+
+    const dotCount = (total.match(/\./g) || []).length;
+    console.log(dotCount);
+
+    return dotCount;
+}
+
+
+
+
 
 
 
