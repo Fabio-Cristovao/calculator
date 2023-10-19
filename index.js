@@ -30,7 +30,14 @@ function getCalculateArgs(e) {
 
         if (calculateArgs.length === 0) {
 
+            dotNumber = 0;
+
             document.querySelector(".dot").style.pointerEvents = "all";
+
+            if (dotNumber >= 1) {
+                console.log("dot number exceeded");
+                document.querySelector(".dot").style.pointerEvents = "none";
+            }
 
             total += e.target.innerHTML;
             display.innerHTML = total;
@@ -43,24 +50,35 @@ function getCalculateArgs(e) {
             }
 
         } else {
- 
+
+            dotNumber = 0;
+
+            document.querySelector(".dot").style.pointerEvents = "all";
+
+            if (dotNumber >= 1) {
+                console.log("dot number exceeded");
+                document.querySelector(".dot").style.pointerEvents = "none";
+            }
+
+
+            display.innerHTML = "";
+            secondNum += e.target.innerHTML;
+            display.innerHTML = secondNum;
+
             if (calculateArgs.length === 2) {
 
-                document.querySelector(".dot").style.pointerEvents = "all";
-
-                display.innerHTML = "";
-                secondNum += e.target.innerHTML;
-                display.innerHTML = secondNum;
+                console.log("error collecting the second argument");
 
                 dotNumber = countDots();
 
                 console.log(dotNumber);
 
-                if (dotNumber >= 1) {
-                    console.log("dot number exceeded");
-                    document.querySelector(".dot").style.pointerEvents = "none";
-                }
             }
+        }
+
+        if (dotNumber >= 1) {
+            console.log("dot number exceeded");
+            document.querySelector(".dot").style.pointerEvents = "none";
         }
     }
 
@@ -129,7 +147,7 @@ function getCalculateArgs(e) {
     }
 
     else {
-        console.log("error!");
+        console.log(operator, total, secondNum);
     }
 }
 
