@@ -31,32 +31,14 @@ function getCalculateArgs(e) {
         dotNumber = 0;
         dotNumber = countDots();
 
-        console.log(total);
-
         if (calculateArgs.length === 0) {
-
-            
-
-            if (dotNumber >= 1) {
-                document.querySelector(".dot").style.pointerEvents = "none"; 
-            } else {
-                document.querySelector(".dot").style.pointerEvents = "all"; 
-            }
 
             total += e.target.innerHTML;
             display.innerHTML = total;
 
             dotNumber = countDots();
 
-            if (dotNumber >= 1) {
-                document.querySelector(".dot").style.pointerEvents = "none";
-            } else {
-                document.querySelector(".dot").style.pointerEvents = "all";
-            }
-
         } else {
-
-            console.log("entering second argument condition");
 
             display.innerHTML = "";
             secondNum += e.target.innerHTML;
@@ -64,17 +46,10 @@ function getCalculateArgs(e) {
 
             dotNumber = 0;
             dotNumber = countDots();
-
-            if (dotNumber >= 1) {
-                console.log("dot number exceeded");
-                document.querySelector(".dot").style.pointerEvents = "none";
-            } else {
-                document.querySelector(".dot").style.pointerEvents = "all";
-            }
         }
 
         if (dotNumber >= 1) {
-            console.log("dot number exceeded");
+
             document.querySelector(".dot").style.pointerEvents = "none";
         } else {
             document.querySelector(".dot").style.pointerEvents = "all";
@@ -85,32 +60,38 @@ function getCalculateArgs(e) {
 
     if (e.target.classList.contains("operator")) {
 
+        secondNum = "";
+
+        total = display.innerHTML;
+
         dotNumber = 0;
         dotNumber = countDots();
-
+        
         switch (e.target.innerHTML) {
             case "+": operator = "add";
-                break;
+            break;
             case '-': operator = "subtract";
-                break;
+            break;
             case '/': operator = "divide";
-                break;
+            break;
             case 'x': operator = "multiply";
-                break;
-
+            break;
+            
             default: "Invalid operation!"
         }
+        
+        console.log(total, e.target.innerHTML);
+
+        numberOfDecimalNumbers = countDecimalPlaces(total);
+        formattedTotal = parseFloat(total).toFixed(6);
+        numberOfDecimalNumbers < 6 ? calculateArgs.push(parseFloat(total), operator) : calculateArgs.push(parseFloat(formattedTotal), operator);
+        numberOfDecimalNumbers < 6 ? display.innerHTML = `${total}${e.target.innerHTML}` : display.innerHTML = `${formattedTotal}${e.target.innerHTML}`;
 
         if (dotCount <= 1) {
             document.querySelector(".dot").style.pointerEvents = "all";
         } else {
             document.querySelector(".dot").style.pointerEvents = "none";
         }
-
-        numberOfDecimalNumbers = countDecimalPlaces(total);
-        formattedTotal = parseFloat(total).toFixed(6);
-        numberOfDecimalNumbers < 6 ? calculateArgs.push(parseFloat(total), operator) : calculateArgs.push(parseFloat(formattedTotal), operator);
-        numberOfDecimalNumbers < 6 ? display.innerHTML = `${total}${e.target.innerHTML}` : display.innerHTML = `${formattedTotal}${e.target.innerHTML}`;
     }
 
     // get the total
@@ -124,7 +105,7 @@ function getCalculateArgs(e) {
             document.querySelector(".dot").style.pointerEvents = "none";
         }
 
-        if (/* dotCount > 1 || */ display.innerHTML === "Invalid!" || total === undefined) {
+        if ( display.innerHTML === "Invalid!" || total === undefined) {
 
             reset();
             display.innerHTML = "Invalid!";
@@ -142,8 +123,6 @@ function getCalculateArgs(e) {
             numberOfDecimalNumbers < 6 ? display.innerHTML = parseFloat(total) : display.innerHTML = parseFloat(total).toFixed(6);
 
         secondNum = "";
-        total = "";
-        calculateArgs = [];
         dotNumber = 0;
         dotNumber = countDots();
 
