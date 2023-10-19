@@ -58,6 +58,10 @@ function getCalculateArgs(e) {
 
     // get the operator
 
+    operators.forEach(function(element) {
+        element.style.pointerEvents = "all";
+    })
+
     if (e.target.classList.contains("operator")) {
 
         secondNum = "";
@@ -80,12 +84,24 @@ function getCalculateArgs(e) {
             default: "Invalid operation!"
         }
         
-        console.log(total, e.target.innerHTML);
-
         numberOfDecimalNumbers = countDecimalPlaces(total);
         formattedTotal = parseFloat(total).toFixed(6);
+
         numberOfDecimalNumbers < 6 ? calculateArgs.push(parseFloat(total), operator) : calculateArgs.push(parseFloat(formattedTotal), operator);
-        numberOfDecimalNumbers < 6 ? display.innerHTML = `${total}${e.target.innerHTML}` : display.innerHTML = `${formattedTotal}${e.target.innerHTML}`;
+        numberOfDecimalNumbers < 6 ? display.innerHTML = `${total}${e.target.innerHTML}` : display.innerHTML = `${formattedTotal} ${e.target.innerHTML}`;
+
+        if (calculateArgs.includes("add") || calculateArgs.includes("subtract") || calculateArgs.includes("multiply") || calculateArgs.includes("divide")) {
+
+            console.log("already operator")
+            operators.forEach(function(element) {
+                element.style.pointerEvents = "none";
+            })
+            console.log(operators);
+        } else {
+            operators.forEach(function(element) {
+                element.style.pointerEvents = "all";
+            })
+        }
 
         if (dotCount <= 1) {
             document.querySelector(".dot").style.pointerEvents = "all";
@@ -97,19 +113,6 @@ function getCalculateArgs(e) {
     // get the total
 
     else if (e.target.classList.contains("total")) {
-
-        if (dotCount <= 1) {
-            document.querySelector(".dot").style.pointerEvents = "all";
-        } else {
-            console.log("entered here");
-            document.querySelector(".dot").style.pointerEvents = "none";
-        }
-
-        if ( display.innerHTML === "Invalid!" || total === undefined) {
-
-            reset();
-            display.innerHTML = "Invalid!";
-        }
 
             countDecimalPlaces(e.target.innerHTML);
 
@@ -125,6 +128,15 @@ function getCalculateArgs(e) {
         secondNum = "";
         dotNumber = 0;
         dotNumber = countDots();
+
+        if (dotCount <= 1) {
+            document.querySelector(".dot").style.pointerEvents = "all";
+        } else {
+            console.log("entered here");
+            document.querySelector(".dot").style.pointerEvents = "none";
+        }
+
+        console.log(operator, total, secondNum);
 
     } else if (e.target.classList.contains("reset")) {
         reset();
@@ -226,10 +238,9 @@ function countDots() {
         }
     }
 
-    console.log(dotCount);
-
     return dotCount;
 }
+
 
 
 
