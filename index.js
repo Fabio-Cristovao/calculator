@@ -62,6 +62,8 @@ function getCalculateArgs(e) {
         element.style.pointerEvents = "all";
     })
 
+    equalsKey.style.pointerEvents = "all";
+
     if (e.target.classList.contains("operator")) {
 
         secondNum = "";
@@ -96,11 +98,15 @@ function getCalculateArgs(e) {
             operators.forEach(function(element) {
                 element.style.pointerEvents = "none";
             })
-            console.log(operators);
+
+            equalsKey.style.pointerEvents = "none";
+    
         } else {
             operators.forEach(function(element) {
                 element.style.pointerEvents = "all";
             })
+
+            equalsKey.style.pointerEvents = "all";
         }
 
         if (dotCount <= 1) {
@@ -111,6 +117,8 @@ function getCalculateArgs(e) {
     }
 
     // get the total
+
+    
 
     else if (e.target.classList.contains("total")) {
 
