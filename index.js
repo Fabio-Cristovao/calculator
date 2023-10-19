@@ -20,25 +20,27 @@ keys.forEach(key => key.addEventListener("click", getCalculateArgs, false));
 equalsKey.addEventListener("click", calculate, false)
 acKey.addEventListener("click", reset, false)
 total = "";
+let dotCount = 0;
 
 function getCalculateArgs(e) {
 
     // get the number arguments
 
+
+
     if (e.target.classList.contains("num") || (e.target.classList.contains("dot"))) {
+
+        let dotNumber = countDots();
+        countDots();
 
         if (calculateArgs.length === 0) {
 
-            
-            let dotNumber = countDots();
-            console.log(dotNumber);
-            
             total += e.target.innerHTML;
             display.innerHTML = total;
-            
+
             if (dotNumber > 1) {
                 document.querySelector(".dot").style.pointerEvents = "none";
-            } 
+            }
         } else {
 
             display.innerHTML = "";
@@ -96,8 +98,6 @@ function getCalculateArgs(e) {
             reset();
             display.innerHTML = "Invalid!";
         } else {
-
-            console.log("here");
 
             countDecimalPlaces(e.target.innerHTML);
 
@@ -201,7 +201,17 @@ function countDecimalPlaces(number) {
 
 function countDots() {
 
-    const dotCount = (total.match(/\./g) || []).length;
+    console.log(display.innerHTML);
+
+    setTimeout(function () {
+        let screen = display.innerHTML;
+
+        const dotMatches = screen.match(/\./g) || [].length;
+
+        if (dotMatches) {
+            dotCount += dotMatches.length;
+        }
+    }, 0);
     console.log(dotCount);
 
     return dotCount;
