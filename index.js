@@ -26,36 +26,50 @@ function getCalculateArgs(e) {
 
     // get the number arguments
 
-
-
     if (e.target.classList.contains("num") || (e.target.classList.contains("dot"))) {
 
-        let dotNumber = countDots();
-        countDots();
-
         if (calculateArgs.length === 0) {
+
+            document.querySelector(".dot").style.pointerEvents = "all";
 
             total += e.target.innerHTML;
             display.innerHTML = total;
 
-            if (dotNumber > 1) {
+            dotNumber = countDots();
+
+            if (dotNumber >= 1) {
+                console.log("dot number exceeded");
                 document.querySelector(".dot").style.pointerEvents = "none";
             }
+
         } else {
+ 
+            if (calculateArgs.length === 2) {
 
-            display.innerHTML = "";
-            secondNum += e.target.innerHTML;
-            display.innerHTML = secondNum;
+                document.querySelector(".dot").style.pointerEvents = "all";
 
+                display.innerHTML = "";
+                secondNum += e.target.innerHTML;
+                display.innerHTML = secondNum;
+
+                dotNumber = countDots();
+
+                console.log(dotNumber);
+
+                if (dotNumber >= 1) {
+                    console.log("dot number exceeded");
+                    document.querySelector(".dot").style.pointerEvents = "none";
+                }
+            }
         }
     }
-
-
-
 
     // get the operator
 
     if (e.target.classList.contains("operator")) {
+
+        dotNumber = 0;
+        dotNumber = countDots();
 
         switch (e.target.innerHTML) {
             case "+": operator = "add";
@@ -70,21 +84,14 @@ function getCalculateArgs(e) {
             default: "Invalid operation!"
         }
 
-        let dotCount = (display.innerHTML.match(/\./g) || []).length;
-
-        if (dotCount > 1) {
-            reset();
-            display.innerHTML = "Invalid!";
-        } else {
-
-            numberOfDecimalNumbers = countDecimalPlaces(total);
-
-            formattedTotal = parseFloat(total).toFixed(6);
-
-            numberOfDecimalNumbers < 6 ? calculateArgs.push(parseFloat(total), operator) : calculateArgs.push(parseFloat(formattedTotal), operator);
-
-            numberOfDecimalNumbers < 6 ? display.innerHTML = `${total}${e.target.innerHTML}` : display.innerHTML = `${formattedTotal}${e.target.innerHTML}`;
+        if (dotCount <= 1) {
+            document.querySelector(".dot").style.pointerEvents = "none";
         }
+
+        numberOfDecimalNumbers = countDecimalPlaces(total);
+        formattedTotal = parseFloat(total).toFixed(6);
+        numberOfDecimalNumbers < 6 ? calculateArgs.push(parseFloat(total), operator) : calculateArgs.push(parseFloat(formattedTotal), operator);
+        numberOfDecimalNumbers < 6 ? display.innerHTML = `${total}${e.target.innerHTML}` : display.innerHTML = `${formattedTotal}${e.target.innerHTML}`;
     }
 
     // get the total
@@ -201,21 +208,25 @@ function countDecimalPlaces(number) {
 
 function countDots() {
 
-    console.log(display.innerHTML);
+    dotCount = 0;
 
-    setTimeout(function () {
-        let screen = display.innerHTML;
+    console.log(calculateArgs.length);
 
-        const dotMatches = screen.match(/\./g) || [].length;
+    let screen = display.innerHTML;
+    let dotMatches = screen.match(/\./g) || [].length;
 
-        if (dotMatches) {
-            dotCount += dotMatches.length;
-        }
-    }, 0);
+    if (dotMatches) {
+        dotCount += dotMatches.length;
+    }
+
     console.log(dotCount);
 
     return dotCount;
 }
+
+
+
+
 
 
 
