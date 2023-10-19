@@ -28,16 +28,18 @@ function getCalculateArgs(e) {
 
     if (e.target.classList.contains("num") || (e.target.classList.contains("dot"))) {
 
+        dotNumber = 0;
+        dotNumber = countDots();
+
         if (calculateArgs.length === 0) {
-
-            dotNumber = 0;
-
-            document.querySelector(".dot").style.pointerEvents = "all";
 
             if (dotNumber >= 1) {
                 console.log("dot number exceeded");
-                document.querySelector(".dot").style.pointerEvents = "none";
+                document.querySelector(".dot").style.pointerEvents = "none"; 
+            } else {
+                document.querySelector(".dot").style.pointerEvents = "all"; 
             }
+            console.log("here");
 
             total += e.target.innerHTML;
             display.innerHTML = total;
@@ -47,23 +49,25 @@ function getCalculateArgs(e) {
             if (dotNumber >= 1) {
                 console.log("dot number exceeded");
                 document.querySelector(".dot").style.pointerEvents = "none";
+            } else {
+                document.querySelector(".dot").style.pointerEvents = "all";
             }
 
         } else {
 
-            dotNumber = 0;
+            display.innerHTML = "";
+            secondNum += e.target.innerHTML;
+            display.innerHTML = secondNum;
 
-            document.querySelector(".dot").style.pointerEvents = "all";
+            dotNumber = 0;
+            dotNumber = countDots();
 
             if (dotNumber >= 1) {
                 console.log("dot number exceeded");
                 document.querySelector(".dot").style.pointerEvents = "none";
+            } else {
+                document.querySelector(".dot").style.pointerEvents = "all";
             }
-
-
-            display.innerHTML = "";
-            secondNum += e.target.innerHTML;
-            display.innerHTML = secondNum;
 
             if (calculateArgs.length === 2) {
 
@@ -79,6 +83,8 @@ function getCalculateArgs(e) {
         if (dotNumber >= 1) {
             console.log("dot number exceeded");
             document.querySelector(".dot").style.pointerEvents = "none";
+        } else {
+            document.querySelector(".dot").style.pointerEvents = "all";
         }
     }
 
@@ -103,6 +109,8 @@ function getCalculateArgs(e) {
         }
 
         if (dotCount <= 1) {
+            document.querySelector(".dot").style.pointerEvents = "all";
+        } else {
             document.querySelector(".dot").style.pointerEvents = "none";
         }
 
@@ -116,9 +124,14 @@ function getCalculateArgs(e) {
 
     else if (e.target.classList.contains("total")) {
 
-        let dotCount = (display.innerHTML.match(/\./g) || []).length;
+        if (dotCount <= 1) {
+            document.querySelector(".dot").style.pointerEvents = "all";
+        } else {
+            console.log("entered here");
+            document.querySelector(".dot").style.pointerEvents = "none";
+        }
 
-        if (dotCount > 1 || display.innerHTML === "Invalid!" || total === undefined) {
+        if (/* dotCount > 1 || */ display.innerHTML === "Invalid!" || total === undefined) {
 
             reset();
             display.innerHTML = "Invalid!";
@@ -141,6 +154,8 @@ function getCalculateArgs(e) {
         }
 
         secondNum = "";
+        dotNumber = 0;
+        dotNumber = countDots();
 
     } else if (e.target.classList.contains("reset")) {
         reset();
@@ -228,13 +243,20 @@ function countDots() {
 
     dotCount = 0;
 
-    console.log(calculateArgs.length);
-
     let screen = display.innerHTML;
     let dotMatches = screen.match(/\./g) || [].length;
 
     if (dotMatches) {
         dotCount += dotMatches.length;
+
+        if (dotCount <= 1 ) {
+            document.querySelector(".dot").style.pointerEvents = "all";
+        } else {
+
+            console.log("entered here");
+
+            document.querySelector(".dot").style.pointerEvents = "none";
+        }
     }
 
     console.log(dotCount);
