@@ -31,15 +31,17 @@ function getCalculateArgs(e) {
         dotNumber = 0;
         dotNumber = countDots();
 
+        console.log(total);
+
         if (calculateArgs.length === 0) {
 
+            
+
             if (dotNumber >= 1) {
-                console.log("dot number exceeded");
                 document.querySelector(".dot").style.pointerEvents = "none"; 
             } else {
                 document.querySelector(".dot").style.pointerEvents = "all"; 
             }
-            console.log("here");
 
             total += e.target.innerHTML;
             display.innerHTML = total;
@@ -47,13 +49,14 @@ function getCalculateArgs(e) {
             dotNumber = countDots();
 
             if (dotNumber >= 1) {
-                console.log("dot number exceeded");
                 document.querySelector(".dot").style.pointerEvents = "none";
             } else {
                 document.querySelector(".dot").style.pointerEvents = "all";
             }
 
         } else {
+
+            console.log("entering second argument condition");
 
             display.innerHTML = "";
             secondNum += e.target.innerHTML;
@@ -67,16 +70,6 @@ function getCalculateArgs(e) {
                 document.querySelector(".dot").style.pointerEvents = "none";
             } else {
                 document.querySelector(".dot").style.pointerEvents = "all";
-            }
-
-            if (calculateArgs.length === 2) {
-
-                console.log("error collecting the second argument");
-
-                dotNumber = countDots();
-
-                console.log(dotNumber);
-
             }
         }
 
@@ -135,25 +128,22 @@ function getCalculateArgs(e) {
 
             reset();
             display.innerHTML = "Invalid!";
-        } else {
+        }
 
             countDecimalPlaces(e.target.innerHTML);
 
             let parsedTotal = parseFloat(total);
             let parsedSecondNum = parseFloat(secondNum);
 
-            console.log(total, operator, secondNum);
-
             total = calculate(parsedTotal, operator, parsedSecondNum);
-
-            console.log(parsedTotal);
 
             numberOfDecimalNumbers = countDecimalPlaces(total);
 
             numberOfDecimalNumbers < 6 ? display.innerHTML = parseFloat(total) : display.innerHTML = parseFloat(total).toFixed(6);
-        }
 
         secondNum = "";
+        total = "";
+        calculateArgs = [];
         dotNumber = 0;
         dotNumber = countDots();
 
@@ -200,8 +190,6 @@ function calculate(total, operator, b) {
     let parsedResult = parseFloat(result);
 
     if (typeof parsedResult !== 'number') {
-
-        console.log("here");
 
         reset();
         display.innerHTML = "Invalid!";
