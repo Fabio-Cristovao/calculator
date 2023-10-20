@@ -19,10 +19,17 @@ let acKey = document.querySelector(".reset");
 keys.forEach(key => key.addEventListener("click", getCalculateArgs, false));
 equalsKey.addEventListener("click", calculate, false)
 acKey.addEventListener("click", reset, false)
+
 total = "";
 let dotCount = 0;
 
+equalsKey.disabled = true;
+
 function getCalculateArgs(e) {
+
+    equalsKey.style.pointerEvents = "none";
+
+    console.log(equalsKey.disabled)
 
     // get the number arguments
 
@@ -58,11 +65,9 @@ function getCalculateArgs(e) {
 
     // get the operator
 
-    operators.forEach(function(element) {
+    operators.forEach(function (element) {
         element.style.pointerEvents = "all";
     })
-
-    equalsKey.style.pointerEvents = "all";
 
     if (e.target.classList.contains("operator")) {
 
@@ -72,20 +77,20 @@ function getCalculateArgs(e) {
 
         dotNumber = 0;
         dotNumber = countDots();
-        
+
         switch (e.target.innerHTML) {
             case "+": operator = "add";
-            break;
+                break;
             case '-': operator = "subtract";
-            break;
+                break;
             case '/': operator = "divide";
-            break;
+                break;
             case 'x': operator = "multiply";
-            break;
-            
+                break;
+
             default: "Invalid operation!"
         }
-        
+
         numberOfDecimalNumbers = countDecimalPlaces(total);
         formattedTotal = parseFloat(total).toFixed(6);
 
@@ -94,15 +99,17 @@ function getCalculateArgs(e) {
 
         if (calculateArgs.includes("add") || calculateArgs.includes("subtract") || calculateArgs.includes("multiply") || calculateArgs.includes("divide")) {
 
-            console.log("already operator")
-            operators.forEach(function(element) {
+            operators.forEach(function (element) {
                 element.style.pointerEvents = "none";
             })
 
             equalsKey.style.pointerEvents = "none";
-    
+
         } else {
-            operators.forEach(function(element) {
+
+
+            console.log("here");
+            operators.forEach(function (element) {
                 element.style.pointerEvents = "all";
             })
 
@@ -118,20 +125,25 @@ function getCalculateArgs(e) {
 
     // get the total
 
-    
+    console.log(calculateArgs.length);
 
-    else if (e.target.classList.contains("total")) {
+    if (calculateArgs.length === 2 ) {
 
-            countDecimalPlaces(e.target.innerHTML);
+        equalsKey.style.pointerEvents = "all";
+    }
 
-            let parsedTotal = parseFloat(total);
-            let parsedSecondNum = parseFloat(secondNum);
+    if (e.target.classList.contains("total")) {
 
-            total = calculate(parsedTotal, operator, parsedSecondNum);
+        countDecimalPlaces(e.target.innerHTML);
 
-            numberOfDecimalNumbers = countDecimalPlaces(total);
+        let parsedTotal = parseFloat(total);
+        let parsedSecondNum = parseFloat(secondNum);
 
-            numberOfDecimalNumbers < 6 ? display.innerHTML = parseFloat(total) : display.innerHTML = parseFloat(total).toFixed(6);
+        total = calculate(parsedTotal, operator, parsedSecondNum);
+
+        numberOfDecimalNumbers = countDecimalPlaces(total);
+
+        numberOfDecimalNumbers < 6 ? display.innerHTML = parseFloat(total) : display.innerHTML = parseFloat(total).toFixed(6);
 
         secondNum = "";
         dotNumber = 0;
@@ -140,11 +152,8 @@ function getCalculateArgs(e) {
         if (dotCount <= 1) {
             document.querySelector(".dot").style.pointerEvents = "all";
         } else {
-            console.log("entered here");
             document.querySelector(".dot").style.pointerEvents = "none";
         }
-
-        console.log(operator, total, secondNum);
 
     } else if (e.target.classList.contains("reset")) {
         reset();
@@ -167,10 +176,6 @@ function reset() {
 function calculate(total, operator, b) {
 
     let result;
-
-    if (b === "") {
-        console.log("here");
-    }
 
     switch (operator) {
 
@@ -236,11 +241,9 @@ function countDots() {
     if (dotMatches) {
         dotCount += dotMatches.length;
 
-        if (dotCount <= 1 ) {
+        if (dotCount <= 1) {
             document.querySelector(".dot").style.pointerEvents = "all";
         } else {
-
-            console.log("entered here");
 
             document.querySelector(".dot").style.pointerEvents = "none";
         }
