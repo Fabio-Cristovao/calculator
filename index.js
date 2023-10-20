@@ -23,13 +23,9 @@ acKey.addEventListener("click", reset, false)
 total = "";
 let dotCount = 0;
 
-equalsKey.disabled = true;
+equalsKey.style.pointerEvents = "none";
 
 function getCalculateArgs(e) {
-
-    equalsKey.style.pointerEvents = "none";
-
-    console.log(equalsKey.disabled)
 
     // get the number arguments
 
@@ -51,6 +47,10 @@ function getCalculateArgs(e) {
             secondNum += e.target.innerHTML;
             display.innerHTML = secondNum;
 
+            if (secondNum !== "") {
+                equalsKey.style.pointerEvents = "all";
+            }
+
             dotNumber = 0;
             dotNumber = countDots();
         }
@@ -70,6 +70,8 @@ function getCalculateArgs(e) {
     })
 
     if (e.target.classList.contains("operator")) {
+
+        console.log("second num reset!");
 
         secondNum = "";
 
@@ -94,8 +96,11 @@ function getCalculateArgs(e) {
         numberOfDecimalNumbers = countDecimalPlaces(total);
         formattedTotal = parseFloat(total).toFixed(6);
 
-        numberOfDecimalNumbers < 6 ? calculateArgs.push(parseFloat(total), operator) : calculateArgs.push(parseFloat(formattedTotal), operator);
-        numberOfDecimalNumbers < 6 ? display.innerHTML = `${total}${e.target.innerHTML}` : display.innerHTML = `${formattedTotal} ${e.target.innerHTML}`;
+        let noFinalDotTotal = removeLastDot(total);
+        let noFinalDotFormattedTotal = removeLastDot(formattedTotal);
+
+        numberOfDecimalNumbers < 6 ? calculateArgs.push(parseFloat(noFinalDotTotal), operator) : calculateArgs.push(parseFloat(noFinalDotFormattedTotal), operator);
+        numberOfDecimalNumbers < 6 ? display.innerHTML = `${noFinalDotTotal}${e.target.innerHTML}` : display.innerHTML = `${noFinalDotFormattedTotal} ${e.target.innerHTML}`;
 
         if (calculateArgs.includes("add") || calculateArgs.includes("subtract") || calculateArgs.includes("multiply") || calculateArgs.includes("divide")) {
 
@@ -106,9 +111,6 @@ function getCalculateArgs(e) {
             equalsKey.style.pointerEvents = "none";
 
         } else {
-
-
-            console.log("here");
             operators.forEach(function (element) {
                 element.style.pointerEvents = "all";
             })
@@ -124,16 +126,9 @@ function getCalculateArgs(e) {
     }
 
     // get the total
-
-    console.log(calculateArgs.length);
-
-    if (calculateArgs.length === 2 ) {
-
-        equalsKey.style.pointerEvents = "all";
-    }
-
+    
     if (e.target.classList.contains("total")) {
-
+        
         countDecimalPlaces(e.target.innerHTML);
 
         let parsedTotal = parseFloat(total);
@@ -146,6 +141,13 @@ function getCalculateArgs(e) {
         numberOfDecimalNumbers < 6 ? display.innerHTML = parseFloat(total) : display.innerHTML = parseFloat(total).toFixed(6);
 
         secondNum = "";
+
+        if (secondNum === "") {
+
+            equalsKey.style.pointerEvents = "none";
+        } else {
+            equalsKey.style.pointerEvents = "all";
+        }
         dotNumber = 0;
         dotNumber = countDots();
 
@@ -190,7 +192,6 @@ function calculate(total, operator, b) {
 
         default: "Invalid operation!"
     }
-
     let parsedResult = parseFloat(result);
 
     if (typeof parsedResult !== 'number') {
@@ -250,6 +251,17 @@ function countDots() {
     }
 
     return dotCount;
+}
+
+function removeLastDot(inputString) { 
+
+  if (inputString.charAt(inputString.length - 1) === '.') {
+
+    return inputString.slice(0, -1);
+  }
+
+  return inputString;
+
 }
 
 
