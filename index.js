@@ -44,6 +44,12 @@ function getCalculateArgs(e) {
         } else {
 
             display.innerHTML = "";
+
+            if (display.innerHTML === "") {
+
+                equalsKey.style.pointerEvents = "none";
+            }
+
             secondNum += e.target.innerHTML;
             display.innerHTML = secondNum;
 
@@ -126,9 +132,9 @@ function getCalculateArgs(e) {
     }
 
     // get the total
-    
+
     if (e.target.classList.contains("total")) {
-        
+
         countDecimalPlaces(e.target.innerHTML);
 
         let parsedTotal = parseFloat(total);
@@ -138,16 +144,16 @@ function getCalculateArgs(e) {
 
         numberOfDecimalNumbers = countDecimalPlaces(total);
 
-        numberOfDecimalNumbers < 6 ? display.innerHTML = parseFloat(total) : display.innerHTML = parseFloat(total).toFixed(6);
+        if (numberOfDecimalNumbers < 6) {
+            display.innerHTML = parseFloat(total);
+        } else {
+            display.innerHTML = formatNUmberWithMaximumDecimals(total);
+        }
 
         secondNum = "";
 
-        if (secondNum === "") {
+        equalsKey.style.pointerEvents = "none";
 
-            equalsKey.style.pointerEvents = "none";
-        } else {
-            equalsKey.style.pointerEvents = "all";
-        }
         dotNumber = 0;
         dotNumber = countDots();
 
@@ -164,7 +170,7 @@ function getCalculateArgs(e) {
     else {
         console.log(operator, total, secondNum);
     }
-}
+};
 
 // global functions
 
@@ -173,7 +179,7 @@ function reset() {
     total = 0;
     display.innerHTML = 0;
     total = "";
-}
+};
 
 function calculate(total, operator, b) {
 
@@ -206,7 +212,7 @@ function calculate(total, operator, b) {
 
         return parsedResult;
     }
-}
+};
 
 // auxiliary functions
 
@@ -230,7 +236,7 @@ function countDecimalPlaces(number) {
     let exponent = match[2] ? parseInt(match[2]) : 0;
 
     return Math.max(0, decimalPart.length - exponent);
-}
+};
 
 function countDots() {
 
@@ -251,18 +257,26 @@ function countDots() {
     }
 
     return dotCount;
-}
+};
 
-function removeLastDot(inputString) { 
+function removeLastDot(inputString) {
 
-  if (inputString.charAt(inputString.length - 1) === '.') {
+    if (inputString.charAt(inputString.length - 1) === '.') {
 
-    return inputString.slice(0, -1);
-  }
+        return inputString.slice(0, -1);
+    }
 
-  return inputString;
+    return inputString;
 
-}
+};
+
+function formatNUmberWithMaximumDecimals(num) {
+
+    const formattedNumber = num.toFixed(6); // Format with up to 6 decimal places
+    const withoutTrailingZeros = formattedNumber.replace(/\.?0+$/, ''); // Remove trailing zeros
+
+    return withoutTrailingZeros;
+};
 
 
 
