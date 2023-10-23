@@ -1,10 +1,4 @@
-// variables
 
-let total;
-let firstNum = "";
-let secondNum = "";
-let operator = "";
-let calculateArgs = [];
 
 // keys event listener 
 
@@ -20,158 +14,41 @@ keys.forEach(key => key.addEventListener("click", getCalculateArgs, false));
 equalsKey.addEventListener("click", calculate, false)
 acKey.addEventListener("click", reset, false)
 
-total = "";
+// variables
+
+let firstNum = [];
+let operator;
+let secondNum;
+
+total = [];
+let calculateArgs = [];
+display.innerHTML = 0;
 let dotCount = 0;
 
 equalsKey.style.pointerEvents = "none";
 
+/* function getCalculateArgs() {
+    console.log("first num, operator and second num")
+}; */
+
 function getCalculateArgs(e) {
 
-    // get the number arguments
-
-    if (e.target.classList.contains("num") || (e.target.classList.contains("dot"))) {
-
-        dotNumber = 0;
-        dotNumber = countDots();
-
-        if (calculateArgs.length === 0) {
-
-            total += e.target.innerHTML;
-            display.innerHTML = total;
-
-            dotNumber = countDots();
-
-        } else {
-
-            display.innerHTML = "";
-
-            if (display.innerHTML === "") {
-
-                equalsKey.style.pointerEvents = "none";
-            }
-
-            secondNum += e.target.innerHTML;
-            display.innerHTML = secondNum;
-
-            if (secondNum !== "") {
-                equalsKey.style.pointerEvents = "all";
-            }
-
-            dotNumber = 0;
-            dotNumber = countDots();
-            console.log("here");
-        }
-
-        if (dotNumber >= 1) {
-
-            document.querySelector(".dot").style.pointerEvents = "none";
-        } else {
-            document.querySelector(".dot").style.pointerEvents = "all";
-        }
+    if (e.target.classList.contains("num") || e.target.classList.contains("dot")) {
+        let firstNum; 
+        firstNum = parseFloat(e.target.innerHTML);
+        calculateArgs.push(firstNum);
     }
-
-    // get the operator
-
-    operators.forEach(function (element) {
-        element.style.pointerEvents = "all";
-    })
 
     if (e.target.classList.contains("operator")) {
 
-        console.log("second num reset!");
-
-        secondNum = "";
-
-        total = display.innerHTML;
-
-        dotNumber = 0;
-        dotNumber = countDots();
-
-        switch (e.target.innerHTML) {
-            case "+": operator = "add";
-                break;
-            case '-': operator = "subtract";
-                break;
-            case '/': operator = "divide";
-                break;
-            case 'x': operator = "multiply";
-                break;
-
-            default: "Invalid operation!"
-        }
-
-        numberOfDecimalNumbers = countDecimalPlaces(total);
-        formattedTotal = parseFloat(total).toFixed(6);
-
-        let noFinalDotTotal = removeLastDot(total);
-        let noFinalDotFormattedTotal = removeLastDot(formattedTotal);
-
-        numberOfDecimalNumbers < 6 ? calculateArgs.push(parseFloat(noFinalDotTotal), operator) : calculateArgs.push(parseFloat(noFinalDotFormattedTotal), operator);
-        numberOfDecimalNumbers < 6 ? display.innerHTML = `${noFinalDotTotal}${e.target.innerHTML}` : display.innerHTML = `${noFinalDotFormattedTotal} ${e.target.innerHTML}`;
-
-        if (calculateArgs.includes("add") || calculateArgs.includes("subtract") || calculateArgs.includes("multiply") || calculateArgs.includes("divide")) {
-
-            operators.forEach(function (element) {
-                element.style.pointerEvents = "none";
-            })
-
-            equalsKey.style.pointerEvents = "none";
-
-        } else {
-            operators.forEach(function (element) {
-                element.style.pointerEvents = "all";
-            })
-
-            equalsKey.style.pointerEvents = "all";
-        }
-
-        if (dotCount <= 1) {
-            document.querySelector(".dot").style.pointerEvents = "all";
-        } else {
-            document.querySelector(".dot").style.pointerEvents = "none";
-        }
+        operator = e.target.innerHTML;
+        calculateArgs.push(operator);     
     }
 
-    // get the total
+    display.innerHTML = calculateArgs.join("");
+    console.log(calculateArgs);
 
-    if (e.target.classList.contains("total")) {
-
-        countDecimalPlaces(e.target.innerHTML);
-
-        let parsedTotal = parseFloat(total);
-        let parsedSecondNum = parseFloat(secondNum);
-
-        total = calculate(parsedTotal, operator, parsedSecondNum);
-
-        numberOfDecimalNumbers = countDecimalPlaces(total);
-
-        if (numberOfDecimalNumbers < 6) {
-            display.innerHTML = parseFloat(total);
-        } else {
-            display.innerHTML = formatNUmberWithMaximumDecimals(total);
-        }
-
-        secondNum = "";
-
-        equalsKey.style.pointerEvents = "none";
-
-        dotNumber = 0;
-        dotNumber = countDots();
-
-        if (dotCount <= 1) {
-            document.querySelector(".dot").style.pointerEvents = "all";
-        } else {
-            document.querySelector(".dot").style.pointerEvents = "none";
-        }
-
-    } else if (e.target.classList.contains("reset")) {
-        reset();
-    }
-
-    else {
-        console.log(operator, total, secondNum);
-    }
-};
+}
 
 // global functions
 
@@ -216,6 +93,11 @@ function calculate(total, operator, b) {
 };
 
 // auxiliary functions
+
+function getNumbersfromInput(inputArray) {
+    const numericValue = parseFloat(inputArray.join('').replace(/,/g, ''));   
+    return numericValue;
+}
 
 function countDecimalPlaces(number) {
 
