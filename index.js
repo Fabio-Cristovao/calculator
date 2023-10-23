@@ -59,6 +59,7 @@ function getCalculateArgs(e) {
 
             dotNumber = 0;
             dotNumber = countDots();
+            console.log("here");
         }
 
         if (dotNumber >= 1) {
